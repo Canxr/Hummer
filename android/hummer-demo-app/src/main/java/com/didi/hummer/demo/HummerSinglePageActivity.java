@@ -1,12 +1,10 @@
 package com.didi.hummer.demo;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.didi.hummer.HummerFragment;
+import com.didi.hummer.HummerActivity;
 import com.didi.hummer.adapter.navigator.NavPage;
-import com.didi.hummer.adapter.navigator.impl.DefaultNavigatorAdapter;
 import com.didi.hummer.context.HummerContext;
 import com.didi.hummer.core.engine.JSCallback;
 import com.didi.hummer.core.engine.JSValue;
@@ -20,21 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by XiaoFeng on 2020/9/21.
+ * Hummer单页面示例
+ *
+ * Created by XiaoFeng on 2020-01-02.
  */
-public class MyHummerFragment extends HummerFragment {
-
-    public static HummerFragment newInstance(@NonNull NavPage page) {
-        MyHummerFragment fragment = new MyHummerFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(DefaultNavigatorAdapter.EXTRA_PAGE_MODEL, page);
-        fragment.setArguments(args);
-        return fragment;
-    }
+public class HummerSinglePageActivity extends HummerActivity {
 
 //    @Override
 //    protected String getNamespace() {
-//        return "my_demo";
+//        return "test_namespace";
 //    }
 
     @Override
@@ -59,6 +51,22 @@ public class MyHummerFragment extends HummerFragment {
                 return "result1";
             }
         });
+    }
+
+    @Override
+    protected void renderHummer() {
+        // 方式一：通过Intent传入的url渲染JS页面
+        super.renderHummer();
+
+        // 方式二：通过assets文件渲染JS页面
+        // hmRender.renderWithAssets("HelloWorld.js");
+
+        // 方式三：通过url渲染JS页面
+        // hmRender.renderWithUrl("http://xxx.xxx.xxx.xxx:8000/HelloWorld.js");
+
+        // 方式四：通过JS内容渲染JS页面，需要先通过其实方式获取到JS内容
+        // String jsContent = "xxxx";
+        // hmRender.render(jsContent);
     }
 
     @Override
@@ -90,10 +98,10 @@ public class MyHummerFragment extends HummerFragment {
         });
 
         // NotifyCenter全局通知消息
-//        NotifyCenter.addEventListener("testEvent", new NotifyCallback(mHMContext.getJsContext()) {
+//        NotifyCenter.addEventListener("testEvent", new NotifyCallback(this) {
 //            @Override
 //            public void onNotify(Object event) {
-//                Log.v("zdf", "onNotify, obj = " + obj);
+//                Log.v("zdf", "onNotify, event = " + event);
 //            }
 //        });
 //

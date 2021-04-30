@@ -17,8 +17,6 @@
 <br/>
 <br/>
 <br/>
-<br/>
-<br/>
 
 ## 简介
 Hummer 是一套高性能高可用的跨端开发框架，一套代码可以同时支持开发 Android 和 iOS 应用。现已经支持 Vue/TypeScript/JavaScript 三种语法，面向大前端开发人员，总有一款适合你。
@@ -35,8 +33,10 @@ Hummer 是一套高性能高可用的跨端开发框架，一套代码可以同�
 ## 开始使用
 - 官方文档请访问 [Hummer 官网](https://hummer.didi.cn/)，点击[【快速开始】](https://hummer.didi.cn/doc#/zh-CN/)按钮。
 - 想创建一个全新的 Hummer 跨端应用，请参考 [创建一个全新应用](https://hummer.didi.cn/doc#/zh-CN/new_project_doc)。
-- 想在现有客户端项目中集成 Hummer 跨端框架，请参考 [Android 端接入文档](https://hummer.didi.cn/doc#/zh-CN/android_doc) 或 [iOS 端接入文档](https://hummer.didi.cn/doc#/zh-CN/ios_doc)。
-- Hummer CLI 脚手架使用，请参考 [CLI 使用教程](https://hummer.didi.cn/doc#/zh-CN/cli_doc)。
+- 想在现有客户端项目中集成 Hummer 跨端框架，请参考 [Android 端接入文档](https://hummer.didi.cn/doc#/zh-CN/android_doc) 和 [iOS 端接入文档](https://hummer.didi.cn/doc#/zh-CN/ios_doc)。
+- 想了解更多客户端集成 Hummer 时的高阶用法，请参考 [Android 进阶](https://hummer.didi.cn/doc#/zh-CN/android_doc_advanced) 和 [iOS 进阶](https://hummer.didi.cn/doc#/zh-CN/ios_doc_advanced)。
+- 想了解更多 Hummer CLI 脚手架的使用说明，请参考 [CLI 使用教程](https://hummer.didi.cn/doc#/zh-CN/cli_doc)。
+- 想了解更多 Hummer 相关的基准测试报告，请参考 [Hummer Standard Benchmarks](https://github.com/OrangeLab/hummer-standard-benchmarks)。
 
 
 ## 简单演示
@@ -53,8 +53,8 @@ Hummer 是一套高性能高可用的跨端开发框架，一套代码可以同�
 | 仓库      |  说明   |
 | :-------- | :------ |
 | [Hummer CLI](https://github.com/OrangeLab/hummer-cli) | Hummer CLI 工具库  |
-| [Tenon Loader](https://github.com/OrangeLab/tenon-loader)   | Tenon Vue Loader  |
 | [Hummer CLI Template](https://github.com/OrangeLab/hummer-cli-template)   | Hummer CLI 的模板仓库  |
+| [Tenon Loader](https://github.com/OrangeLab/tenon-loader)   | Tenon Vue Loader  |
 | [Tenon Plugins ](https://github.com/OrangeLab/tenon-plugins)   | Tenon 的插件库  |
 
 
@@ -74,9 +74,15 @@ Hummer 基于 Apache-2.0 协议进行分发和使用，更多信息参见 [协�
  <img src="https://pt-starimg.didistatic.com/static/starimg/img/rvyykc2JhS1607601681131.png" height = "200" alt="QQ 交流群" />
 </div>
 
-## 友情链接
-1. [DoKit](https://github.com/didi/DoraemonKit) DoraemonKit /'dɔ:ra:'emɔn/，简称DoKit，中文名 哆啦A梦，意味着能够像哆啦A梦一样提供给他的主人各种各样的工具。Just Do Kit
-2. 我们团队的技术公众号【滴滴OrangeLab】，欢迎关注，我们会在这里持续输出团队内部比较有深度的技术沉淀和经验分享，欢迎一起交流。
+## 微信公众号
+我们团队的官方技术公众号【滴滴OrangeLab】，欢迎关注，我们会在这里持续输出团队内部比较有深度的技术沉淀和经验分享，欢迎一起交流。
 <div style="height: 200px">
- <img src="https://pt-starimg.didistatic.com/static/starimg/img/cPlaMme4g81616682162304.jpg" height = "200" alt="滴滴OrangeLab" />
+ <img alt="滴滴OrangeLab" src="https://pt-starimg.didistatic.com/static/starimg/img/cPlaMme4g81616682162304.jpg" height = "200" />
+</div>
+
+## 友情链接
+1. [DoKit](https://github.com/didi/DoraemonKit) DoraemonKit /'dɔ:ra:'emɔn/，简称 DoKit，中文名 哆啦A梦，意味着能够像哆啦A梦一样提供给他的主人各种各样的工具。Just Do Kit
+2. [OrangeLab](https://github.com/OrangeLab) 我们团队的官方 GitHub 组织，我们团队所有对外开源的其他项目都可以在这里找到。
+<div style="height: 200px">
+ <img alt="OrangeLab" src="https://pt-starimg.didistatic.com/static/starimg/img/D0o2VUdbBk1619669626314.png" height = "200" />
 </div>
