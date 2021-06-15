@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.didi.hummer.adapter.http.HttpCallback;
 import com.didi.hummer.adapter.navigator.NavPage;
@@ -81,6 +82,7 @@ public class HummerRender {
 
     public void onDestroy() {
         isDestroyed.set(true);
+        hmContext.onDestroy();
 
         if (DebugUtil.isDebuggable()) {
             HummerDebugger.release(hmContext);
@@ -88,8 +90,6 @@ public class HummerRender {
                 devTools.release();
             }
         }
-
-        hmContext.onDestroy();
     }
 
     public boolean onBack() {
@@ -122,6 +122,23 @@ public class HummerRender {
             return;
         }
 
+        requestJsBundle(url, false);
+
+        if (DebugUtil.isDebuggable()) {
+            // 调试插件
+            HummerDebugger.init(hmContext, url);
+
+            // 热更新
+            if (devTools != null) {
+                devTools.initConnection(hmContext, url, () -> {
+                    hmContext.onRefresh();
+                    requestJsBundle(url, true);
+                });
+            }
+        }
+    }
+
+    private void requestJsBundle(String url, boolean isRefresh) {
         NetworkUtil.httpGet(url, (HttpCallback<String>) response -> {
             if (isDestroyed.get()) {
                 if (renderCallback != null) {
@@ -145,17 +162,11 @@ public class HummerRender {
             }
 
             render(response.data, url);
-        });
 
-        if (DebugUtil.isDebuggable()) {
-            // 调试插件
-            HummerDebugger.init(hmContext, url);
-
-            // 热更新
-            if (devTools != null) {
-                devTools.connectWebSocket(url);
+            if (DebugUtil.isDebuggable() && isRefresh) {
+                Toast.makeText(hmContext, "页面已刷新", Toast.LENGTH_SHORT).show();
             }
-        }
+        });
     }
 
     public void renderWithAssets(String assetsPath) {

@@ -11,7 +11,6 @@ export interface PageOptions{
   canScroll?: Boolean,  // 是否可滚动
   pageStyle?: Record<string, string> // 页面样式
 }
-// TODO 后期接入真实的Page实例
 export class RootViewComponent extends ViewComponent{
   public _onCreate: Function
   public _onAppear: Function
@@ -43,8 +42,7 @@ export class RootViewComponent extends ViewComponent{
       this.appendChild(this._element)
     }
   }
-
-  get element(){
+  get element():ScrollViewComponent | ViewComponent{
     return this._canScroll && this._element ? this._element : this
   }
   onCreate(){

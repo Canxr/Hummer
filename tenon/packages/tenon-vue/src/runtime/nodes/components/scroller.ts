@@ -1,10 +1,10 @@
 import {Scroller as ScrollerComponent, HorizontalScroller} from '@hummer/hummer-front'
 import {Base} from '../Base'
-import {NODE_VIEW, NODE_REFRESH, NODE_LOADMORE} from '@hummer/tenon-utils'
+import {NODE_SCROLLER, NODE_REFRESH, NODE_LOADMORE} from '@hummer/tenon-utils'
 
 // 增加事件
 export class Scroller extends Base{
-  __NAME = NODE_VIEW
+  __NAME = NODE_SCROLLER
 
   constructor(){
     super();
@@ -12,12 +12,9 @@ export class Scroller extends Base{
   }
   _setAttribute(key:string, value: any){
     switch(key){
-      case 'disabled':
-        this.disabled = value
-        break;
-      case 'scroll-direction':
+      case 'scrollDirection':
         if(value === 'horizontal' &&  this.element instanceof ScrollerComponent){
-          // 属性切换时，滚动插件需要重新生命；同时元素渲染从children一次向上，这个时候element children已经赋值
+          // 属性切换时，Scroller组件需要重新声明，同时进行 Children的重新赋值
           let scroller = new HorizontalScroller() as any
           scroller.style = this._style
           for(let child of this.children.values()){
@@ -27,11 +24,13 @@ export class Scroller extends Base{
           this.element = scroller
         }
       break;
+      case 'bounces':
+        this.element.bounces = value !== false
+        break;
+      case 'showScrollBar':
+        this.element.showScrollBar = value !== false
+        break;
       default:
-        // showScrollBar
-        this.element.style = {
-          [key]:value
-        }
         break;
     }
   }
@@ -60,7 +59,6 @@ export class Scroller extends Base{
       }else {
         this.element.appendChild(child.element);
         child._onMounted();
-        child.onMounted();
       }
     }
   }
@@ -90,7 +88,6 @@ export class Scroller extends Base{
       }else {
         this.element.appendChild(child.element);
         child._onMounted();
-        child.onMounted();
       }
     }
   }

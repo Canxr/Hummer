@@ -20,6 +20,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.didi.hummer.render.utility.RTLUtil;
+
 import java.util.Arrays;
 
 /**
@@ -28,6 +30,11 @@ import java.util.Arrays;
  * Created by XiaoFeng on 2020-01-14.
  */
 public class BackgroundDrawable extends Drawable {
+
+    /**
+     * 是否需要转换为RTL布局
+     */
+    private boolean needRTL = false;
 
     /**
      * 背景图片Drawable
@@ -181,6 +188,9 @@ public class BackgroundDrawable extends Drawable {
                     topLeftPercent > 0 || topRightPercent > 0 || bottomRightPercent > 0 || bottomLeftPercent > 0;
         }
 
+        /**
+         * 根据百分比计算边框圆角
+         */
         public void fillWithPercent(Rect bounds) {
             if (bounds == null || bounds.isEmpty()) {
                 return;
@@ -217,6 +227,30 @@ public class BackgroundDrawable extends Drawable {
                     bottomLeftY = bounds.height() * bottomLeftPercent / 100;
                 }
             }
+        }
+
+        /**
+         * 把边框圆角转换为RTL
+         */
+        public void toRTL() {
+            float t = topLeftX;
+            topLeftX = topRightX;
+            topRightX = t;
+            t = topLeftY;
+            topLeftY = topRightY;
+            topRightY = t;
+            t = bottomLeftX;
+            bottomLeftX = bottomRightX;
+            bottomRightX = t;
+            t = bottomLeftY;
+            bottomLeftY = bottomRightY;
+            bottomRightY = t;
+            t = topLeftPercent;
+            topLeftPercent = topRightPercent;
+            topRightPercent = t;
+            t = bottomLeftPercent;
+            bottomLeftPercent = bottomRightPercent;
+            bottomRightPercent = t;
         }
     }
 
@@ -328,6 +362,16 @@ public class BackgroundDrawable extends Drawable {
                     return BorderStyle.NONE;
             }
         }
+
+        /**
+         * 把边框圆角转换为RTL
+         */
+        public void toRTL() {
+            RTLUtil.toRTLRect(style);
+            RTLUtil.toRTLRect(width);
+            RTLUtil.toRTLRect(color);
+            radius.toRTL();
+        }
     }
 
     /**
@@ -347,6 +391,13 @@ public class BackgroundDrawable extends Drawable {
         }
     }
 
+    public BackgroundDrawable() {
+    }
+
+    public BackgroundDrawable(boolean needRTL) {
+        this.needRTL = needRTL;
+    }
+
     @Override
     public void draw(@NonNull Canvas canvas) {
         if (!border.hasBorder()) {
@@ -364,6 +415,10 @@ public class BackgroundDrawable extends Drawable {
         RectF width = border.width;
         BorderRadius radius = border.radius;
         radius.fillWithPercent(getBounds());
+
+        if (needRTL) {
+            border.toRTL();
+        }
 
         mOuterBoundsRect.set(getBounds());
 
@@ -730,7 +785,7 @@ public class BackgroundDrawable extends Drawable {
             return;
         }
         Canvas shadowCanvas = new Canvas(shadowBitmap);
-        shadowCanvas.translate(offset, offset);
+        shadowCanvas.translate(-shadow.dx + offset, -shadow.dy + offset);
 
         // 生成阴影图片
         mShadowPaint.setColor(Color.WHITE);
@@ -749,7 +804,7 @@ public class BackgroundDrawable extends Drawable {
         }
 
         // 画阴影图片
-        canvas.drawBitmap(shadowBitmap, -offset, -offset, null);
+        canvas.drawBitmap(shadowBitmap, shadow.dx - offset, shadow.dy - offset, null);
 
         // 释放阴影图片
         if (!shadowBitmap.isRecycled()) {
@@ -1048,6 +1103,10 @@ public class BackgroundDrawable extends Drawable {
     public void setBorderBottomLeftRadiusPercent(float radiusPercent) {
         border.radius.bottomLeftPercent = radiusPercent;
         invalidateSelf();
+    }
+
+    public Border getBorder() {
+        return border;
     }
 
     public float[] getBorderRadii() {

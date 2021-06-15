@@ -27,15 +27,7 @@ export class TextArea extends Base{
     return this.element.focused || false
   }
   set focused(value:Boolean){
-    let flag = value
-    if(typeof value === 'string'){
-      if(value === 'true'){
-        flag = true
-      }else if(value === 'false'){
-        flag = false
-      }
-    }
-    this.element.focused = flag
+    this.element.focused = value !== false
   }
 
   // 占位提示文本
@@ -84,10 +76,10 @@ export class TextArea extends Base{
       case 'type':
         this.type = value
         break;
-      case 'max-length':
+      case 'maxLength':
         this.maxLength = value
         break;
-      case 'return-key-type':
+      case 'returnKeyType':
         this.returnKeyType = value
         break;
       case 'rows':
@@ -168,7 +160,7 @@ export class TextArea extends Base{
         default:
           break; 
       }
-      this._input && this._input({value: text, state})
+      this._input && this._input({value: text, text: text, state})
     })
     this._hasInput = true
   }

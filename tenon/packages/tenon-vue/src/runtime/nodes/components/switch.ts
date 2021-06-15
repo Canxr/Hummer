@@ -13,7 +13,7 @@ export class Switch extends Base{
     return this.element.checked
   }
   set value(value: Boolean){
-    this.element.checked = value
+    this.element.checked = value !== false
   }
 
   set onColor(value: string){
@@ -37,13 +37,13 @@ export class Switch extends Base{
       case 'value':
         this.value = value
         break;
-      case 'open-color':
+      case 'openColor':
         this.onColor = value
         break;
-      case 'close-color':
+      case 'closeColor':
         this.offColor = value
         break;
-      case 'thumb-color':
+      case 'thumbColor':
         this.thumbColor = value
         break;
       default:
@@ -55,7 +55,7 @@ export class Switch extends Base{
     if(event === 'switch'){
       let invoker = (e:any) => {
         let {state} = e
-        let value = state === 1?true:false
+        let value = (state === 1 || state === true)?true:false //  Android state true/false; iOS state 1/0；
         func.call(this, value)
       }
       this.element.addEventListener(event, invoker)

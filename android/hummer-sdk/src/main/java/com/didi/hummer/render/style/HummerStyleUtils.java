@@ -1,12 +1,15 @@
 package com.didi.hummer.render.style;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import com.didi.hummer.HummerSDK;
+import com.didi.hummer.context.HummerContext;
 import com.didi.hummer.core.engine.jsc.jni.HummerException;
 import com.didi.hummer.core.util.ExceptionUtil;
 import com.didi.hummer.render.component.view.HMBase;
 import com.didi.hummer.render.utility.DPUtil;
+import com.didi.hummer.render.utility.RTLUtil;
 import com.didi.hummer.render.utility.RemUtil;
 import com.didi.hummer.render.utility.YogaAttrUtils;
 import com.facebook.yoga.YogaAlign;
@@ -123,6 +126,7 @@ public class HummerStyleUtils {
         public static final String BORDER_RADIUS_TR = "borderTopRightRadius";
         public static final String BORDER_RADIUS_BR = "borderBottomRightRadius";
         public static final String BORDER_RADIUS_BL = "borderBottomLeftRadius";
+        public static final String BOX_SIZING = "boxSizing";
         public static final String SHADOW = "shadow";
         public static final String OPACITY = "opacity";
         public static final String VISIBILITY = "visibility";
@@ -332,6 +336,8 @@ public class HummerStyleUtils {
                 if (Hummer.TRANSFORM.equals(key) || (isTransitionStyle(key) && (view.supportTransitionStyle("all") || view.supportTransitionStyle(key)))) {
                     view.handleTransitionStyle(key, value);
                 } else if (isYogaStyle(key)) {
+                    // 可能需要转换成RTL样式
+                    key = toRTLStyleIfNeed(view.getContext(), key);
                     // 处理Yoga支持样式
                     applyYogaStyle(view.getYogaNode(), key, value); // 耗时1ms
                 } else {
@@ -340,6 +346,8 @@ public class HummerStyleUtils {
                 }
             } catch (Exception e) {
                 // 处理异常信息显示不全的问题，补充异常是在哪个key和value下产生
+                String jsStack = ExceptionUtil.getJSErrorStack(view.getJSValue().getJSContext());
+                ExceptionUtil.addStackTrace(e, new StackTraceElement("<<JS_Stack>>", "", "\n" + jsStack, -1));
                 ExceptionUtil.addStackTrace(e, new StackTraceElement("<<Style>>", "", String.format("%s: %s", key, value), -1));
                 HummerException.nativeException(view.getJSValue().getJSContext(), e);
             }
@@ -438,6 +446,36 @@ public class HummerStyleUtils {
      */
     private static boolean isDPStyle(String key) {
         return !NON_DP_STYLES.contains(key);
+    }
+
+    /**
+     * 转换成RTL样式
+     *
+     * @param key
+     */
+    static String toRTLStyleIfNeed(Context context, String key) {
+        boolean supportRTL = context instanceof HummerContext && HummerSDK.isSupportRTL(((HummerContext) context).getNamespace());
+        boolean needRTL = supportRTL && RTLUtil.isRTL(context);
+        if (needRTL) {
+            if (key.equals(Yoga.LEFT)) {
+                key = Yoga.RIGHT;
+            } else if (key.equals(Yoga.RIGHT)) {
+                key = Yoga.LEFT;
+            } else if (key.equals(Yoga.POSITION_LEFT)) {
+                key = Yoga.POSITION_RIGHT;
+            } else if (key.equals(Yoga.POSITION_RIGHT)) {
+                key = Yoga.POSITION_LEFT;
+            } else if (key.equals(Yoga.MARGIN_LEFT)) {
+                key = Yoga.MARGIN_RIGHT;
+            } else if (key.equals(Yoga.MARGIN_RIGHT)) {
+                key = Yoga.MARGIN_LEFT;
+            } else if (key.equals(Yoga.PADDING_LEFT)) {
+                key = Yoga.PADDING_RIGHT;
+            } else if (key.equals(Yoga.PADDING_RIGHT)) {
+                key = Yoga.PADDING_LEFT;
+            }
+        }
+        return key;
     }
 
     /**

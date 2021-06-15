@@ -53,6 +53,11 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
     private float alphaFactor = ScaleAndAlphaTransformer.DEFAULT_MIN_ALPHA;
     private int cornerRadius;
 
+    /**
+     * 是否正在设置数据，设置数据过程中不需要回调mOnPageChange
+     */
+    private boolean isDataSetting;
+
     public ViewPager(HummerContext context, JSValue jsValue) {
         super(context, jsValue, null);
         HummerStyleUtils.addNonDpStyle(STYLE_LOOP_INTERVAL);
@@ -84,6 +89,12 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
                 .setOnPageChangeListener(new android.support.v4.view.ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                        /**
+                         * Page 滑动距离回调
+                         *
+                         * @param position 当前滑动到的Page位置（滑动到中间位置时会切换position）
+                         * @param positionOffset 当前Page滑动的距离（单位px）
+                         */
                         if (mOnPageScrollListener != null) {
                             // 滑动到中间位置时切换position
                             if (positionOffset >= 0.5) {
@@ -95,13 +106,20 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
 
                     @Override
                     public void onPageSelected(int position) {
-                        if (mOnPageChangeListener != null) {
+                        if (mOnPageChangeListener != null && !isDataSetting) {
                             mOnPageChangeListener.call(position, mData.size());
                         }
                     }
 
                     @Override
                     public void onPageScrollStateChanged(int state) {
+                        /**
+                         * Page 滑动状态改变回调
+                         *
+                         * 0-停止滑动时
+                         * 1-手动拖拽时
+                         * 2-手指抬起时、自动滑动开始时
+                         */
                         if (mOnPageScrollStateChangeListener != null) {
                             mOnPageScrollStateChangeListener.call(state);
                         }
@@ -219,7 +237,9 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
         if (canLoop != adapter.isCanLoop()) {
             getView().setCanLoop(canLoop);
             adapter.setCanLoop(canLoop);
-            setData(mData);
+            if (!mData.isEmpty()) {
+                setData(mData);
+            }
         }
     }
 
@@ -235,6 +255,8 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
         if (!data.isEmpty() && !(data.get(0) instanceof String) && mOnItemViewCallback == null) {
             return;
         }
+
+        isDataSetting = true;
 
         mData = data;
 
@@ -252,6 +274,9 @@ public class ViewPager extends HMBase<BannerViewPager<Object, ViewHolder>> imple
         // 这里重写PagerAdapter，以适用自定义View
         adapter.setData(data);
         getView().getViewPager().setAdapter(adapter);
+
+        isDataSetting = false;
+
         setCurrentItem(0);
     }
 

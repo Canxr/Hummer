@@ -1,5 +1,33 @@
 # Release Nodes
 
+### 0.3.22
+- 补齐transform对rotateZ的支持；
+- Memory组件支持clearAll接口；
+- 支持边框盒的盒模型；
+- 修复cli日志无法打印生命周期销毁的日志的问题；
+
+### 0.3.21.5
+- 升级QuickJS至最新版2021-03-27，并且优化JS和Native异常堆栈输出信息；
+- 修复首次进入页面时，轮播组件的回调会回调两次的问题；
+- 修复Scroller直接不支持justifyContent、alignItems、padding等flex属性的问题；
+- 修复富文本不支持自定义字体的问题；
+- 支持字体文件配置自定义Assets目录；
+- Image组件支持占位图和失败图，新增Image.load接口；
+- 修复Image组件不设置resize，或者resize设置为'origin'时，图片大小不是原图大小的问题；
+- 修复Button组件不设置press属性，只设置disable属性时，按压状态会变成disable样式的问题；
+- 修复Android 9.0以下系统阴影外边缘可能被裁剪的问题；
+- 修复获取Input的focused状态不准的问题；
+- Switch组件的state改成0和1，和iOS对齐；
+- 优化DevTools的显示，修复按钮拖动时位置跳变的问题；
+- 修复Timer的setInterval在一次callback回调中多次调用clearInterval时出现的crash问题；
+
+### 0.3.20
+- 修复evaluateJavaScript中scriptId传null时出现空指针异常；
+- 修复WebSocket组件子线程访问JS的问题；
+- 触摸事件支持返回屏幕相对坐标；
+- 支持RTL布局；
+- 在调式模式下，对CML链接的WS端口号做特殊处理；
+
 ### 0.3.19
 - 修复Loading对话框和自定义对话框在某些机型上没有去除默认背景的问题；
 - 修复HotLoad时偶现的StackOverflow问题；

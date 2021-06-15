@@ -49,6 +49,12 @@ export const HighComponent = {
   },{
     url: './ex-component-viewpager.js',
     name: 'Component Viewpager'
+  },{
+    url: './ex-component-popup.js',
+    name: 'Component Popup'
+  },{
+    url: './ex-component-test.js',
+    name: 'Component Test'
   }]
 }
 
@@ -66,6 +72,38 @@ export const Animation = {
   },]
 }
 
+export const Plugin = {
+  title: '插件篇',
+  items: [{
+    url: './plugin-error.js',
+    name: '错误捕获'
+  },{
+    url: './store-demo.js',
+    name: '页面状态管理'
+  },{
+    url: './store-muti-main.js',
+    name: '多页面级状态管理'
+  }]
+}
+
+export const Style = {
+  title: '样式篇',
+  items: [{
+    url: './style-basic.js',
+    name: '基础样式'
+  },{
+    url: './style-layout.js',
+    name: '布局样式'
+  }]
+}
+export const Event = {
+  title: '事件篇',
+  items: [{
+    url: './event.js',
+    name: '基础事件'
+  }]
+}
+
 export const Other = {
   title: '其它',
   items: [{
@@ -73,4 +111,6 @@ export const Other = {
     name: 'Lifecycle'
   }]
 }
-export const Menu =  [GrammarMenu, ComponentMenu, HighComponent, Animation, Other]
+
+
+export const Menu =  [GrammarMenu, ComponentMenu, HighComponent, Style, Animation,Event, Plugin, Other]

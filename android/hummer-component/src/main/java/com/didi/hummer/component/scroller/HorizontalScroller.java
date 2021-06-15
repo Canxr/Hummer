@@ -67,6 +67,15 @@ public class HorizontalScroller extends HMBase<HScrollView> implements HMBase.Po
         getView().release();
     }
 
+    @Override
+    protected void onStyleUpdated(Map<String, Object> newStyle) {
+        // 把最外层的Yoga属性复制一份给最内层的Layout，使JS侧设置的样式生效
+        layout.getYogaNode().copyStyle(getYogaNode());
+        layout.getYogaNode().setFlexDirection(YogaFlexDirection.ROW);
+        adjustWidthAndHeight();
+        adjustMinMaxWidthAndHeight();
+    }
+
     private void initScrollView() {
         layout = new HummerLayout(getContext());
         layout.getYogaNode().setFlexDirection(YogaFlexDirection.ROW);
@@ -159,6 +168,13 @@ public class HorizontalScroller extends HMBase<HScrollView> implements HMBase.Po
         } else {
             layout.getYogaNode().setHeightPercent(100);
         }
+    }
+
+    private void adjustMinMaxWidthAndHeight() {
+        layout.getYogaNode().setMinWidth(Float.NaN);
+        layout.getYogaNode().setMaxWidth(Float.NaN);
+        layout.getYogaNode().setMinHeight(Float.NaN);
+        layout.getYogaNode().setMaxHeight(Float.NaN);
     }
 
     @JsMethod("appendChild")
